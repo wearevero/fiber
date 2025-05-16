@@ -3,7 +3,7 @@
 An internal RESTful API developed using the Go-Fiber framework, designed to deliver exceptional speed, seamless integration, and reliable scalability. 
 
 
-![Go Thumbnail](/assets/banner.jpeg) 
+<img src="./assets/banner.jpeg" alt="Go Thumbnail" style="width: 100%; border-radius: 16px;">
 
 ## Development
 
