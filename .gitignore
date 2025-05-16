@@ -1,0 +1,54 @@
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Output dari build
+/bin/
+/build/
+/dist/
+*.log
+
+# Dependency vendoring (jika tidak ingin commit folder vendor)
+vendor/
+
+# Editor/IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*.bak
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Go Modules cache (tidak perlu dimasukkan ke repo)
+go.sum
+
+# Konfigurasi dan environment lokal
+.env
+.env.*.local
+*.local
+
+# Testing
+coverage.out
+
+# Database lokal / file sementara
+*.db
+*.sqlite
+*.sqlite3
+*.log
+/tmp
+
+# Docker / container files (jika ada)
+*.pid
+*.sock
+
+# Ignore go.work file (jika pakai Go workspace dan tidak ingin disimpan di repo)
+go.work
+go.work.sum
