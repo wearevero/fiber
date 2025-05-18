@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/wearevero/fiber/models"
 	"github.com/wearevero/fiber/routes"
 )
@@ -13,7 +14,7 @@ func main() {
 	// Connect to database
 	models.ConnectDatabase()
 
-	// get value from APP_PORT
+	// Get value from APP_PORT
 	port := os.Getenv("APP_PORT")
 	if port == "" {
 		// set default port to 8000
@@ -22,6 +23,20 @@ func main() {
 
 	// Create instance Fiber app
 	app := fiber.New()
+
+	// CORS middleware
+	app.Use(cors.New())
+
+	// Does offer advanced configuration:
+	/*
+		app.Use(cors.New(cors.Config{
+			AllowOrigins:     "http://localhost:3000, https://internal-frontend.com",
+			AllowMethods:     "GET,POST,PUT,DELETE",
+			AllowHeaders:     "Origin, Content-Type, Accept",
+			ExposeHeaders:    "Content-Length",
+			AllowCredentials: true,
+		}))
+	*/
 
 	// Setup routes
 	routes.SetupRoutes(app)
