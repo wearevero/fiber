@@ -1,9 +1,13 @@
 package models
 
+import "database/sql"
+
 type Bagian struct {
-	IdBagian   int64  `gorm:"primaryKey;column:IdBagian" json:"IdBagian"`
-	NamaBagian string `gorm:"type:varchar(300);column:NamaBagian" json:"NamaBagian"`
-	Yonma      string `gorm:"type:text;column:Yonma" json:"Yonma"`
+	IdBagian      int64          `gorm:"primaryKey;column:IdBagian" json:"IdBagian"`
+	NamaBagian    string         `gorm:"column:NamaBagian" json:"NamaBagian"`
+	Yonma         string         `gorm:"column:Yonma" json:"Yonma"`
+	UrutanBagian  string         `gorm:"column:UrutanBagian" json:"UrutanBagian"`
+	NamaBagianAlt sql.NullString `gorm:"column:nama_bagian" json:"nama_bagian"`
 }
 
 func (Bagian) TableName() string {

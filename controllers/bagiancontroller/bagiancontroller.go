@@ -39,30 +39,30 @@ func Show(c *fiber.Ctx) error {
 }
 
 func Create(c *fiber.Ctx) error {
-	var bagian models.Bagian
+	var tbagian models.Bagian
 
-	if err := c.BodyParser(&bagian); err != nil {
+	if err := c.BodyParser(&tbagian); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Format data tidak valid",
 			"error":   err.Error(),
 		})
 	}
 
-	if err := models.DB.Create(&bagian).Error; err != nil {
+	if err := models.DB.Create(&tbagian).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": "Gagal menyimpan data",
 			"error":   err.Error(),
 		})
 	}
 
-	return c.Status(http.StatusCreated).JSON(bagian)
+	return c.Status(http.StatusCreated).JSON(tbagian)
 }
 
 func Update(c *fiber.Ctx) error {
 	IdBagian := c.Params("IdBagian")
 
-	var bagian models.Bagian
-	if err := c.BodyParser(&bagian); err != nil {
+	var tbagian models.Bagian
+	if err := c.BodyParser(&tbagian); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Format data tidak valid",
 			"error":   err.Error(),
@@ -70,7 +70,7 @@ func Update(c *fiber.Ctx) error {
 	}
 
 	// Update berdasarkan IdBagian
-	if models.DB.Model(&models.Bagian{}).Where("IdBagian = ?", IdBagian).Updates(bagian).RowsAffected == 0 {
+	if models.DB.Model(&models.Bagian{}).Where("IdBagian = ?", IdBagian).Updates(tbagian).RowsAffected == 0 {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"message": "Data tidak ditemukan atau tidak ada perubahan",
 		})
