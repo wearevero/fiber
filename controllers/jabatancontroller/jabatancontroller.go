@@ -9,22 +9,22 @@ import (
 )
 
 func Index(c *fiber.Ctx) error {
-	var jabatan []models.Jabatan
+	var tjabatan []models.Jabatan
 
-	if err := models.DB.Find(&jabatan).Error; err != nil {
+	if err := models.DB.Find(&tjabatan).Error; err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
 			"message": "Gagal mengambil data",
 		})
 	}
 
-	return c.JSON(jabatan)
+	return c.JSON(tjabatan)
 }
 
 func Show(c *fiber.Ctx) error {
 	IdJabatan := c.Params("IdJabatan")
-	var jabatan models.Jabatan
+	var tjabatan models.Jabatan
 
-	if err := models.DB.First(&jabatan, "IdJabatan = ?", IdJabatan).Error; err != nil {
+	if err := models.DB.First(&tjabatan, "IdJabatan = ?", IdJabatan).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return c.Status(http.StatusNotFound).JSON(fiber.Map{
 				"message": "Data tidak ditemukan",
@@ -35,42 +35,42 @@ func Show(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.JSON(jabatan)
+	return c.JSON(tjabatan)
 }
 
 func Create(c *fiber.Ctx) error {
-	var bagian models.Bagian
+	var tjabatan models.Jabatan
 
-	if err := c.BodyParser(&bagian); err != nil {
+	if err := c.BodyParser(&tjabatan); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Format data tidak valid",
 			"error":   err.Error(),
 		})
 	}
 
-	if err := models.DB.Create(&bagian).Error; err != nil {
+	if err := models.DB.Create(&tjabatan).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": "Gagal menyimpan data",
 			"error":   err.Error(),
 		})
 	}
 
-	return c.Status(http.StatusCreated).JSON(bagian)
+	return c.Status(http.StatusCreated).JSON(tjabatan)
 }
 
 func Update(c *fiber.Ctx) error {
-	IdBagian := c.Params("IdBagian")
+	IdJabatan := c.Params("IdJabatan")
 
-	var bagian models.Bagian
-	if err := c.BodyParser(&bagian); err != nil {
+	var tjabatan models.Jabatan
+	if err := c.BodyParser(&tjabatan); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Format data tidak valid",
 			"error":   err.Error(),
 		})
 	}
 
-	// Update berdasarkan IdBagian
-	if models.DB.Model(&models.Bagian{}).Where("IdBagian = ?", IdBagian).Updates(bagian).RowsAffected == 0 {
+	// Update berdasarkan IdJabatan
+	if models.DB.Model(&models.Jabatan{}).Where("IdJabatan = ?", IdJabatan).Updates(tjabatan).RowsAffected == 0 {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"message": "Data tidak ditemukan atau tidak ada perubahan",
 		})
@@ -82,9 +82,9 @@ func Update(c *fiber.Ctx) error {
 }
 
 func Delete(c *fiber.Ctx) error {
-	IdBagian := c.Params("IdBagian")
+	IdJabatan := c.Params("IdJabatan")
 
-	if models.DB.Delete(&models.Bagian{}, "IdBagian = ?", IdBagian).RowsAffected == 0 {
+	if models.DB.Delete(&models.Jabatan{}, "IdJabatan = ?", IdJabatan).RowsAffected == 0 {
 		return c.Status(http.StatusNotFound).JSON(fiber.Map{
 			"message": "Tidak dapat menghapus data / data tidak ditemukan",
 		})

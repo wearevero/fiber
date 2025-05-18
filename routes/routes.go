@@ -14,17 +14,17 @@ func SetupRoutes(app *fiber.App) {
 	bagian := master_data.Group("/bagian")
 	jabatan := master_data.Group("jabatan")
 
-	// Define routes bagian
+	// Define master-data/bagian routes
 	bagian.Get("/", bagiancontroller.Index)
 	bagian.Get("/:IdBagian", bagiancontroller.Show)
 	bagian.Post("/", bagiancontroller.Create)
-	bagian.Put("/:IdBagian", bagiancontroller.Update)
+	bagian.Patch("/:IdBagian", bagiancontroller.Update)
 	bagian.Delete("/:IdBagian", bagiancontroller.Delete)
 
-	// Define routes jabatan
+	// Define master-data/jabatan routes
 	jabatan.Get("/", jabatancontroller.Index)
 	jabatan.Get("/:IdJabatan", jabatancontroller.Show)
 	jabatan.Post("/", jabatancontroller.Create)
-	jabatan.Put("/:IdJabatan", jabatancontroller.Update)
+	jabatan.Patch("/:IdJabatan", jabatancontroller.Update)
 	jabatan.Delete("/:IdJabatan", jabatancontroller.Delete)
 }
