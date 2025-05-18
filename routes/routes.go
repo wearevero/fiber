@@ -2,8 +2,9 @@ package routes
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/wearevero/fiber/controllers/bagiancontroller"
-	"github.com/wearevero/fiber/controllers/jabatancontroller"
+	"github.com/wearevero/fiber/controllers/MasterData/bagiancontroller"
+	"github.com/wearevero/fiber/controllers/MasterData/jabatancontroller"
+	"github.com/wearevero/fiber/controllers/MasterData/karyawancontroller"
 )
 
 func SetupRoutes(app *fiber.App) {
@@ -13,6 +14,7 @@ func SetupRoutes(app *fiber.App) {
 	master_data := v1.Group("/master-data")
 	bagian := master_data.Group("/bagian")
 	jabatan := master_data.Group("jabatan")
+	karyawan := master_data.Group("karyawan")
 
 	// Define master-data/bagian routes
 	bagian.Get("/", bagiancontroller.Index)
@@ -27,4 +29,11 @@ func SetupRoutes(app *fiber.App) {
 	jabatan.Post("/", jabatancontroller.Create)
 	jabatan.Patch("/:IdJabatan", jabatancontroller.Update)
 	jabatan.Delete("/:IdJabatan", jabatancontroller.Delete)
+
+	// Define master-data/karyawan routes
+	karyawan.Get("/", karyawancontroller.Index)
+	karyawan.Get("/:IdKaryawan", karyawancontroller.Show)
+	karyawan.Post("/", karyawancontroller.Create)
+	karyawan.Patch("/:IdKaryawan", karyawancontroller.Update)
+	karyawan.Delete("/:IdKaryawan", karyawancontroller.Delete)
 }

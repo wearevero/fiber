@@ -19,7 +19,6 @@ func ConnectDatabase() {
 		log.Fatal("Error loading .env file")
 	}
 
-	// Ambil dari environment
 	user := os.Getenv("DB_USER")
 	pass := os.Getenv("DB_PASS")
 	host := os.Getenv("DB_HOST")
@@ -32,8 +31,7 @@ func ConnectDatabase() {
 		log.Fatal("Gagal konek ke database: ", err)
 	}
 
-	// AutoMigrate model kamu
-	db.AutoMigrate(&Bagian{}) // Panggil package models
+	db.AutoMigrate(&Bagian{})
 	DB = db
 
 }

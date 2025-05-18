@@ -10,23 +10,23 @@ import (
 )
 
 func main() {
-	// Menghubungkan ke database
+	// Connect to database
 	models.ConnectDatabase()
 
-	// Mengambil nilai port dari environment variable
+	// get value from APP_PORT
 	port := os.Getenv("APP_PORT")
 	if port == "" {
-		// Jika tidak ada, set default ke port 8080
-		port = "8080"
+		// set default port to 8000
+		port = "8000"
 	}
 
-	// Membuat instance aplikasi Fiber
+	// Create instance Fiber app
 	app := fiber.New()
 
 	// Setup routes
 	routes.SetupRoutes(app)
 
-	// Menjalankan aplikasi di port yang ditentukan
+	// Run server with defined port
 	log.Printf("Server running on port %s", port)
 	err := app.Listen(":" + port)
 	if err != nil {

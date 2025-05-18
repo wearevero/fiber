@@ -3,7 +3,7 @@ package models
 import "database/sql"
 
 type Bagian struct {
-	IdBagian      int64          `gorm:"primaryKey;column:IdBagian" json:"IdBagian"`
+	IdBagian      uint           `gorm:"primaryKey;column:IdBagian" json:"IdBagian"`
 	NamaBagian    string         `gorm:"column:NamaBagian" json:"NamaBagian"`
 	Yonma         string         `gorm:"column:Yonma" json:"Yonma"`
 	UrutanBagian  string         `gorm:"column:UrutanBagian" json:"UrutanBagian"`
