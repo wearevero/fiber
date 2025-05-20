@@ -30,8 +30,8 @@ func main() {
 	// Does offer advanced configuration:
 	/*
 		app.Use(cors.New(cors.Config{
-			AllowOrigins:     "http://localhost:3000, https://internal-frontend.com",
-			AllowMethods:     "GET,POST,PUT,DELETE",
+			AllowOrigins:     "http://localhost:3000",
+			AllowMethods:     "GET, POST, PUT, DELETE",
 			AllowHeaders:     "Origin, Content-Type, Accept",
 			ExposeHeaders:    "Content-Length",
 			AllowCredentials: true,
