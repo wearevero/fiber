@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/wearevero/fiber/controllers/Laporan/absenjamcontroller"
 	"github.com/wearevero/fiber/controllers/MasterData/bagiancontroller"
 	"github.com/wearevero/fiber/controllers/MasterData/jabatancontroller"
 	"github.com/wearevero/fiber/controllers/MasterData/karyawancontroller"
@@ -12,6 +13,7 @@ func SetupRoutes(app *fiber.App) {
 	api := app.Group("/api")
 	v1 := api.Group("/v1")
 
+	// Master Data Routes
 	master_data := v1.Group("/master-data")
 	bagian := master_data.Group("/bagian")
 	jabatan := master_data.Group("jabatan")
@@ -45,4 +47,13 @@ func SetupRoutes(app *fiber.App) {
 	user.Post("/", usercontroller.Create)
 	user.Patch("/:IdUser", usercontroller.Update)
 	user.Delete("/:IdUser", usercontroller.Delete)
+
+	// Laporan Routes
+	laporan := v1.Group("/laporan")
+	jam := laporan.Group("/absen-jam")
+
+	jam.Get("/:IdBagian/:TglAbsen", absenjamcontroller.Index)
+	jam.Get("/detail/:IdAbsenJam", absenjamcontroller.Show)
+	// jam.Patch("/:IdAbsenJam", absenjamcontroller.Update)
+	// jam.Delete("/:IdAbsenJam", absenjamcontroller.Delete)
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
@@ -13,7 +14,7 @@ import (
 var DB *gorm.DB
 
 func ConnectDatabase() {
-	// Load .env file
+
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
@@ -30,6 +31,17 @@ func ConnectDatabase() {
 	if err != nil {
 		log.Fatal("Gagal konek ke database: ", err)
 	}
+
+	sqlDB, err := db.DB()
+
+	if err != nil {
+		log.Fatal("Gagal mendapatkan sql.DB: ", err)
+	}
+
+	// Database Pooling
+	sqlDB.SetMaxOpenConns(50)
+	sqlDB.SetMaxIdleConns(10)
+	sqlDB.SetConnMaxLifetime(time.Hour)
 
 	db.AutoMigrate(&Bagian{})
 	DB = db
