@@ -2,7 +2,9 @@ package routes
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/wearevero/fiber/controllers/Laporan/absenhariancontroller"
 	"github.com/wearevero/fiber/controllers/Laporan/absenjamcontroller"
+	"github.com/wearevero/fiber/controllers/Laporan/absenlemburcontroller"
 	"github.com/wearevero/fiber/controllers/MasterData/bagiancontroller"
 	"github.com/wearevero/fiber/controllers/MasterData/jabatancontroller"
 	"github.com/wearevero/fiber/controllers/MasterData/karyawancontroller"
@@ -13,12 +15,18 @@ func SetupRoutes(app *fiber.App) {
 	api := app.Group("/api")
 	v1 := api.Group("/v1")
 
+	v1.Get("/hello", func(c *fiber.Ctx) error {
+		return c.JSON(fiber.Map{
+			"message": "Hello from Fiber API v1!",
+		})
+	})
+
 	// Master Data Routes
 	master_data := v1.Group("/master-data")
 	bagian := master_data.Group("/bagian")
-	jabatan := master_data.Group("jabatan")
-	karyawan := master_data.Group("karyawan")
-	user := master_data.Group("user")
+	jabatan := master_data.Group("/jabatan")
+	karyawan := master_data.Group("/karyawan")
+	user := master_data.Group("/user")
 
 	// Define master-data/bagian routes
 	bagian.Get("/", bagiancontroller.Index)
@@ -51,9 +59,16 @@ func SetupRoutes(app *fiber.App) {
 	// Laporan Routes
 	laporan := v1.Group("/laporan")
 	jam := laporan.Group("/absen-jam")
+	harian := laporan.Group("/absen-harian")
+	lembur := laporan.Group("/absen-lembur")
 
+	// Define laporan/absen-jam routes
 	jam.Get("/:IdBagian/:TglAbsen", absenjamcontroller.Index)
 	jam.Get("/detail/:IdAbsenJam", absenjamcontroller.Show)
-	// jam.Patch("/:IdAbsenJam", absenjamcontroller.Update)
-	// jam.Delete("/:IdAbsenJam", absenjamcontroller.Delete)
+
+	// Define laporan/absen-harian routes
+	harian.Get("/:IdBagian/:TglAbsen", absenhariancontroller.Index)
+
+	// Define laporan/absen-lembur routes
+	lembur.Get("/:IdBagian/:TglAbsen", absenlemburcontroller.Index)
 }

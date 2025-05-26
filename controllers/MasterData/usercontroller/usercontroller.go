@@ -9,6 +9,12 @@ import (
 	"gorm.io/gorm"
 )
 
+var DB *gorm.DB
+
+func SetDB(database *gorm.DB) {
+	DB = database
+}
+
 // helper response for consistency
 func respond(c *fiber.Ctx, status int, message string, data interface{}) error {
 	return c.Status(status).JSON(fiber.Map{

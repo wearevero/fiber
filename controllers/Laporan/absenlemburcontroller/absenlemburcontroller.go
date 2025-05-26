@@ -1,4 +1,4 @@
-package absenjamcontroller
+package absenlemburcontroller
 
 import (
 	"net/http"

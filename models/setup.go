@@ -14,7 +14,6 @@ import (
 var DB *gorm.DB
 
 func ConnectDatabase() {
-
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
@@ -33,17 +32,15 @@ func ConnectDatabase() {
 	}
 
 	sqlDB, err := db.DB()
-
 	if err != nil {
 		log.Fatal("Gagal mendapatkan sql.DB: ", err)
 	}
 
-	// Database Pooling
 	sqlDB.SetMaxOpenConns(50)
 	sqlDB.SetMaxIdleConns(10)
 	sqlDB.SetConnMaxLifetime(time.Hour)
 
-	db.AutoMigrate(&Bagian{})
-	DB = db
+	db.AutoMigrate(&User{}, &Bagian{}, &Jabatan{}, &Karyawan{}, &AbsenHarian{}, &AbsenJam{}, &AbsenLembur{})
 
+	DB = db
 }

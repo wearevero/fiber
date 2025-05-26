@@ -6,6 +6,13 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/wearevero/fiber/controllers/Laporan/absenhariancontroller"
+	"github.com/wearevero/fiber/controllers/Laporan/absenjamcontroller"
+	"github.com/wearevero/fiber/controllers/Laporan/absenlemburcontroller"
+	"github.com/wearevero/fiber/controllers/MasterData/bagiancontroller"
+	"github.com/wearevero/fiber/controllers/MasterData/jabatancontroller"
+	"github.com/wearevero/fiber/controllers/MasterData/karyawancontroller"
+	"github.com/wearevero/fiber/controllers/MasterData/usercontroller"
 	"github.com/wearevero/fiber/models"
 	"github.com/wearevero/fiber/routes"
 )
@@ -13,6 +20,13 @@ import (
 func main() {
 	// Connect to database
 	models.ConnectDatabase()
+	bagiancontroller.SetDB(models.DB)
+	jabatancontroller.SetDB(models.DB)
+	karyawancontroller.SetDB(models.DB)
+	usercontroller.SetDB(models.DB)
+	absenjamcontroller.SetDB(models.DB)
+	absenhariancontroller.SetDB(models.DB)
+	absenlemburcontroller.SetDB(models.DB)
 
 	// Get value from APP_PORT
 	port := os.Getenv("APP_PORT")
