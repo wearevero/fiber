@@ -5,16 +5,17 @@ import (
 )
 
 type AbsenLembur struct {
-	IdAbsenLemburd uint      `gorm:"primaryKey;column:IdAbsenHarian" json:"IdAbsenHarian"`
-	IdKaryawan     string    `gorm:"column:IdKaryawan;size:255" json:"IdKaryawan"`  // VARCHAR(255)
-	IdBagian       string    `gorm:"column:IdBagian;type:longtext" json:"IdBagian"` // longtext
-	TglAbsen       time.Time `gorm:"column:TglAbsen;type:date" json:"TglAbsen"`     // date
-	JamMasuk       time.Time `gorm:"column:JamMasuk;type:date" json:"JamMasuk"`
-	JamPulang      time.Time `gorm:"column:JamPulang;type:date" json:"JamPulang"`
-	JamPulangX     time.Time `gorm:"column:JamPulangX;type:date" json:"JamPulangX"`
-	Proses         string    `gorm:"column:Proses;type:date" json:"Proses"`
-	Shift          time.Time `gorm:"column:Shift;type:date" json:"Shift"`
-	Keterangan     time.Time `gorm:"column:Keterangan;type:date" json:"Keterangan"`
+	IdAbsenLembur int       `gorm:"column:IdAbsenLembur;primaryKey" json:"IdAbsenLembur"`
+	IdKaryawan    string    `gorm:"column:IdKaryawan" json:"IdKaryawan"`
+	IdBagian      string    `gorm:"column:IdBagian" json:"IdBagian"`
+	TglAbsen      time.Time `gorm:"column:TglAbsen" json:"TglAbsen"`
+	JamMasuk      time.Time `gorm:"column:JamMasuk" json:"JamMasuk"`
+	JamPulang     time.Time `gorm:"column:JamPulang" json:"JamPulang"`
+	JumlahJam     string    `gorm:"column:JumlahJam" json:"JumlahJam"`
+	JumlahJamx    time.Time `gorm:"column:JumlahJamx" json:"JumlahJamx"`
+	Proses        string    `gorm:"column:Proses" json:"Proses"`
+	Shift         string    `gorm:"column:Shift" json:"Shift"`
+	Keterangan    string    `gorm:"column:Keterangan" json:"Keterangan"`
 
 	Karyawan Karyawan `gorm:"foreignKey:IdKaryawan;references:IdKaryawan" json:"Karyawan"`
 }

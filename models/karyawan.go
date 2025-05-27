@@ -2,8 +2,8 @@ package models
 
 type Karyawan struct {
 	IdKaryawan       uint     `gorm:"primaryKey;column:IdKaryawan" json:"IdKaryawan"`
-	NikKaryawan      string   `gorm:"column:NikKaryawan" json:"NikKaryawan"`
-	TglMasuk         string   `gorm:"column:TglMasuk" json:"TglMasuk"`
+	NikKaryawan      *string  `gorm:"column:NikKaryawan" json:"NikKaryawan"`
+	TglMasuk         *string  `gorm:"column:TglMasuk" json:"TglMasuk"`
 	NamaLengkap      *string  `gorm:"column:NamaLengkap" json:"NamaLengkap"`
 	Jabatan          *string  `gorm:"column:Jabatan" json:"Jabatan"`
 	NamaPanggilan    *string  `gorm:"column:NamaPanggilan" json:"NamaPanggilan"`

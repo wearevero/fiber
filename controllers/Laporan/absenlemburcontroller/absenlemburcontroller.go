@@ -1,6 +1,7 @@
 package absenlemburcontroller
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -25,17 +26,18 @@ func respond(c *fiber.Ctx, status int, message string, data interface{}, count i
 }
 
 func Index(c *fiber.Ctx) error {
-	idBagian := c.Params("IdBagian")
-	tglAbsen := c.Params("TglAbsen")
+	IdBagian := c.Params("IdBagian")
+	TglAbsen := c.Params("TglAbsen")
 
-	var data []models.AbsenJam
-	query := DB.Where("TglAbsen = ?", tglAbsen)
+	var data []models.AbsenLembur
+	query := DB.Where("TglAbsen = ?", TglAbsen)
 
-	if idBagian != "ALL" && idBagian != "all" {
-		query = query.Where("IdBagian = ?", idBagian)
+	if IdBagian != "ALL" && IdBagian != "all" {
+		query = query.Where("IdBagian = ?", IdBagian)
 	}
 
 	if err := query.Preload("Karyawan").Find(&data).Error; err != nil {
+		fmt.Println("Query error:", err)
 		return respond(c, http.StatusInternalServerError, "Gagal mengambil data", nil, 0)
 	}
 
@@ -43,26 +45,16 @@ func Index(c *fiber.Ctx) error {
 }
 
 func Show(c *fiber.Ctx) error {
-	idStr := c.Params("IdAbsenJam")
-	IdAbsenJam64, err := strconv.ParseUint(idStr, 10, 64)
+	idStr := c.Params("IdAbsenLembur")
+	idUint64, err := strconv.ParseUint(idStr, 10, 64)
 	if err != nil {
-		return respond(c, http.StatusBadRequest, "IdAbsenJam tidak valid", nil, 0)
+		return respond(c, http.StatusBadRequest, "IdAbsenLembur tidak valid", nil, 0)
 	}
-	IdAbsenJam := uint(IdAbsenJam64)
+	id := uint(idUint64)
 
-	var data models.AbsenJam
+	var data models.AbsenLembur
 
-	columns := []string{
-		"IdAbsenJam",
-		"IdKaryawan",
-		"IdBagian",
-		"TglAbsen",
-		"JamMasuk",
-		"JamPulang",
-		"JumlahJam",
-	}
-
-	err = DB.Select(columns).First(&data, "IdAbsenJam = ?", IdAbsenJam).Error
+	err = DB.First(&data, "IdAbsenLembur = ?", id).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return respond(c, http.StatusNotFound, "Data tidak ditemukan", nil, 0)
@@ -74,7 +66,7 @@ func Show(c *fiber.Ctx) error {
 }
 
 func Create(c *fiber.Ctx) error {
-	data := new(models.AbsenJam)
+	data := new(models.AbsenLembur)
 
 	if err := c.BodyParser(data); err != nil {
 		return respond(c, http.StatusBadRequest, "Request tidak valid", nil, 0)
@@ -87,35 +79,15 @@ func Create(c *fiber.Ctx) error {
 	return respond(c, http.StatusCreated, "Data berhasil dibuat", data, 1)
 }
 
-func Update(c *fiber.Ctx) error {
-	IdAbsenJam := c.Params("IdAbsenJam")
-	data := new(models.AbsenJam)
-
-	if err := DB.First(&models.AbsenJam{}, "IdAbsenJam = ?", IdAbsenJam).Error; err != nil {
-		if err == gorm.ErrRecordNotFound {
-			return respond(c, http.StatusNotFound, "Data tidak ditemukan", nil, 0)
-		}
-		return respond(c, http.StatusInternalServerError, "Gagal mengambil data", nil, 0)
-	}
-
-	if err := c.BodyParser(data); err != nil {
-		return respond(c, http.StatusBadRequest, "Request tidak valid", nil, 0)
-	}
-
-	idUint, _ := strconv.ParseUint(IdAbsenJam, 10, 64)
-	data.IdAbsenJam = uint(idUint)
-
-	if err := DB.Save(&data).Error; err != nil {
-		return respond(c, http.StatusInternalServerError, "Gagal memperbarui data", nil, 0)
-	}
-
-	return respond(c, http.StatusOK, "Data berhasil diperbarui", data, 1)
-}
-
 func Delete(c *fiber.Ctx) error {
-	IdAbsenJam := c.Params("IdAbsenJam")
+	idStr := c.Params("IdAbsenLembur")
+	idUint64, err := strconv.ParseUint(idStr, 10, 64)
+	if err != nil {
+		return respond(c, http.StatusBadRequest, "IdAbsenLembur tidak valid", nil, 0)
+	}
+	id := uint(idUint64)
 
-	if err := DB.Delete(&models.AbsenJam{}, "IdAbsenJam = ?", IdAbsenJam).Error; err != nil {
+	if err := DB.Delete(&models.AbsenLembur{}, "IdAbsenLembur = ?", id).Error; err != nil {
 		return respond(c, http.StatusInternalServerError, "Gagal menghapus data", nil, 0)
 	}
 

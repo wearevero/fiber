@@ -12,6 +12,7 @@ import (
 	"github.com/wearevero/fiber/controllers/MasterData/bagiancontroller"
 	"github.com/wearevero/fiber/controllers/MasterData/jabatancontroller"
 	"github.com/wearevero/fiber/controllers/MasterData/karyawancontroller"
+	"github.com/wearevero/fiber/controllers/MasterData/karyawankeluarcontroller"
 	"github.com/wearevero/fiber/controllers/MasterData/usercontroller"
 	"github.com/wearevero/fiber/models"
 	"github.com/wearevero/fiber/routes"
@@ -20,45 +21,36 @@ import (
 func main() {
 	// Connect to database
 	models.ConnectDatabase()
-	bagiancontroller.SetDB(models.DB)
-	jabatancontroller.SetDB(models.DB)
-	karyawancontroller.SetDB(models.DB)
-	usercontroller.SetDB(models.DB)
-	absenjamcontroller.SetDB(models.DB)
-	absenhariancontroller.SetDB(models.DB)
-	absenlemburcontroller.SetDB(models.DB)
 
-	// Get value from APP_PORT
+	// Set DB instance to each controller (if required)
+	db := models.DB
+	bagiancontroller.SetDB(db)
+	jabatancontroller.SetDB(db)
+	karyawancontroller.SetDB(db)
+	karyawankeluarcontroller.SetDB(db)
+	usercontroller.SetDB(db)
+	absenjamcontroller.SetDB(db)
+	absenhariancontroller.SetDB(db)
+	absenlemburcontroller.SetDB(db)
+
+	// Get port from .env or use default
 	port := os.Getenv("APP_PORT")
 	if port == "" {
-		// set default port to 8000
 		port = "8000"
 	}
 
-	// Create instance Fiber app
+	// Create new Fiber app
 	app := fiber.New()
 
-	// CORS middleware
+	// Setup CORS
 	app.Use(cors.New())
 
-	// Does offer advanced configuration:
-	/*
-		app.Use(cors.New(cors.Config{
-			AllowOrigins:     "http://localhost:3000",
-			AllowMethods:     "GET, POST, PUT, DELETE",
-			AllowHeaders:     "Origin, Content-Type, Accept",
-			ExposeHeaders:    "Content-Length",
-			AllowCredentials: true,
-		}))
-	*/
+	// Register API routes
+	routes.RegisterAPIRoutes(app)
 
-	// Setup routes
-	routes.SetupRoutes(app)
-
-	// Run server with defined port
+	// Start server
 	log.Printf("Server running on port %s", port)
-	err := app.Listen(":" + port)
-	if err != nil {
+	if err := app.Listen(":" + port); err != nil {
 		log.Fatalf("Error starting server: %v", err)
 	}
 }

@@ -40,7 +40,7 @@ func ConnectDatabase() {
 	sqlDB.SetMaxIdleConns(10)
 	sqlDB.SetConnMaxLifetime(time.Hour)
 
-	db.AutoMigrate(&User{}, &Bagian{}, &Jabatan{}, &Karyawan{}, &AbsenHarian{}, &AbsenJam{}, &AbsenLembur{})
+	db.AutoMigrate(&User{}, &Bagian{}, &Jabatan{}, &Karyawan{}, &AbsenHarian{}, &AbsenJam{}, &AbsenLembur{}, &KaryawanKeluar{})
 
 	DB = db
 }
