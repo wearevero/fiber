@@ -6,7 +6,7 @@ import (
 
 type AbsenJam struct {
 	IdAbsenJam uint      `gorm:"primaryKey;column:IdAbsenJam" json:"IdAbsenJam"`
-	IdKaryawan string    `gorm:"column:IdKaryawan" json:"IdKaryawan"`
+	IdKaryawan int       `gorm:"column:IdKaryawan" json:"IdKaryawan"`
 	IdBagian   string    `gorm:"column:IdBagian" json:"IdBagian"`
 	TglAbsen   time.Time `gorm:"column:TglAbsen" json:"TglAbsen"`
 	JamMasuk   time.Time `gorm:"column:JamMasuk" json:"JamMasuk"`

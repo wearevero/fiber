@@ -55,8 +55,7 @@ func Create(c *fiber.Ctx) error {
 		return respond(c, http.StatusBadRequest, "Format data tidak valid", err.Error())
 	}
 
-	// Validasi sederhana
-	if user.Username == nil || user.Password == nil || user.IdKaryawan == nil {
+	if user.Username == nil || user.Password == nil || user.IdKaryawan == 0 {
 		return respond(c, http.StatusBadRequest, "Username, Password, dan IdKaryawan wajib diisi", nil)
 	}
 

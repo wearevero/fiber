@@ -3,7 +3,7 @@ package models
 import "time"
 
 type KaryawanKeluar struct {
-	IdKeluar       uint      `gorm:"primaryKey;column:IdKeluar" json:"IdKeluar"`
+	IdKeluar       int       `gorm:"primaryKey;column:IdKeluar" json:"IdKeluar"`
 	IdKaryawan     int       `gorm:"type:int;column:IdKaryawan" json:"IdKaryawan"`
 	TglPengajuan   time.Time `gorm:"type:timestamp;column:TglPengajuan" json:"TglPengajuan"`
 	TglKeluar      time.Time `gorm:"type:timestamp;column:TglKeluar" json:"TglKeluar"`

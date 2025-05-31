@@ -128,8 +128,8 @@ func Update(c *fiber.Ctx) error {
 		return respond(c, http.StatusBadRequest, "Format data tidak valid", nil)
 	}
 
-	idUint, _ := strconv.ParseUint(IdKaryawan, 10, 64)
-	data.IdKaryawan = uint(idUint)
+	idInt, _ := strconv.ParseUint(IdKaryawan, 10, 64)
+	data.IdKaryawan = int(idInt)
 
 	if err := DB.Save(&data).Error; err != nil {
 		return respond(c, http.StatusInternalServerError, "Gagal memperbarui data", nil)

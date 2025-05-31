@@ -5,10 +5,10 @@ import (
 )
 
 type AbsenHarian struct {
-	IdAbsenHarian uint      `gorm:"primaryKey;column:IdAbsenHarian" json:"IdAbsenHarian"`
-	IdKaryawan    string    `gorm:"column:IdKaryawan;size:255" json:"IdKaryawan"`  // VARCHAR(255)
-	IdBagian      string    `gorm:"column:IdBagian;type:longtext" json:"IdBagian"` // longtext
-	TglAbsen      time.Time `gorm:"column:TglAbsen;type:date" json:"TglAbsen"`     // date
+	IdAbsenHarian int       `gorm:"primaryKey;column:IdAbsenHarian" json:"IdAbsenHarian"`
+	IdKaryawan    int       `gorm:"column:IdKaryawan;size:255" json:"IdKaryawan"`
+	IdBagian      string    `gorm:"column:IdBagian;type:longtext" json:"IdBagian"`
+	TglAbsen      time.Time `gorm:"column:TglAbsen;type:date" json:"TglAbsen"`
 	Absen         string    `gorm:"column:Absen;type:longtext" json:"Absen"`
 
 	Karyawan Karyawan `gorm:"foreignKey:IdKaryawan;references:IdKaryawan" json:"Karyawan"`

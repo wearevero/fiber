@@ -75,7 +75,7 @@ func Update(c *fiber.Ctx) error {
 	}
 
 	idUint, _ := strconv.ParseUint(IdBagian, 10, 64)
-	data.IdBagian = uint(idUint)
+	data.IdBagian = int(idUint)
 
 	if err := DB.Save(&data).Error; err != nil {
 		return respond(c, http.StatusInternalServerError, "Gagal memperbarui data", nil, 0)

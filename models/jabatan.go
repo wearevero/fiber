@@ -1,7 +1,7 @@
 package models
 
 type Jabatan struct {
-	IdJabatan uint   `gorm:"primaryKey;column:IdJabatan" json:"IdJabatan"`
+	IdJabatan int    `gorm:"primaryKey;column:IdJabatan" json:"IdJabatan"`
 	Jabatan   string `gorm:"type:varchar(300);column:Jabatan" json:"Jabatan"`
 }
 
