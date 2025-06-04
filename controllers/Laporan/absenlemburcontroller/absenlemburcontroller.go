@@ -14,6 +14,7 @@ func SetDB(database *gorm.DB) {
 	DB = database
 }
 
+// Fungsi response standar
 func respond(c *fiber.Ctx, status int, message string, data interface{}, count int) error {
 	return c.Status(status).JSON(fiber.Map{
 		"status":  status,
@@ -23,11 +24,18 @@ func respond(c *fiber.Ctx, status int, message string, data interface{}, count i
 	})
 }
 
+// Endpoint utama
 func Index(c *fiber.Ctx) error {
 	idBagian := c.Params("IdBagian")
 	tglAbsen := c.Params("TglAbsen")
 
-	var data []models.AbsenLembur
+	var absenLembur []models.AbsenLembur
+	var bagianList []models.Bagian
+
+	// Ambil semua bagian
+	if err := DB.Find(&bagianList).Error; err != nil {
+		return respond(c, http.StatusInternalServerError, "Gagal mengambil data bagian", nil, 0)
+	}
 
 	query := DB.Where("TglAbsen = ?", tglAbsen)
 
@@ -35,9 +43,18 @@ func Index(c *fiber.Ctx) error {
 		query = query.Where("IdBagian = ?", idBagian)
 	}
 
-	if err := query.Preload("Karyawan").Find(&data).Error; err != nil {
-		return respond(c, http.StatusInternalServerError, "Gagal mengambil data", nil, 0)
+	if err := query.
+		Preload("DetailKaryawan").
+		Preload("Bagian").
+		Find(&absenLembur).Error; err != nil {
+		return respond(c, http.StatusInternalServerError, "Gagal mengambil data absen lembur", nil, 0)
 	}
 
-	return respond(c, http.StatusOK, "Data berhasil ditemukan", data, len(data))
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"status":     http.StatusOK,
+		"message":    "Data berhasil ditemukan",
+		"count":      len(absenLembur),
+		"data":       absenLembur,
+		"bagianList": bagianList,
+	})
 }

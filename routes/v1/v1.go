@@ -9,7 +9,6 @@ func RegisterV1Routes(api fiber.Router) {
 		return c.JSON(fiber.Map{"message": "Hello from Fiber API v1!"})
 	})
 
-	// Grouped route registrations
 	registerMasterDataRoutes(v1)
 	registerLaporanRoutes(v1)
 }

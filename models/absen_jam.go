@@ -5,9 +5,9 @@ import (
 )
 
 type AbsenJam struct {
-	IdAbsenJam uint      `gorm:"primaryKey;column:IdAbsenJam" json:"IdAbsenJam"`
-	IdKaryawan int       `gorm:"column:IdKaryawan" json:"IdKaryawan"`
-	IdBagian   string    `gorm:"column:IdBagian" json:"IdBagian"`
+	IdAbsenJam int       `gorm:"primaryKey;column:IdAbsenJam" json:"IdAbsenJam"`
+	IdKaryawan *int      `gorm:"column:IdKaryawan" json:"IdKaryawan"`
+	IdBagian   *int      `gorm:"column:IdBagian" json:"IdBagian"`
 	TglAbsen   time.Time `gorm:"column:TglAbsen" json:"TglAbsen"`
 	JamMasuk   time.Time `gorm:"column:JamMasuk" json:"JamMasuk"`
 	JamPulang  time.Time `gorm:"column:JamPulang" json:"JamPulang"`
@@ -16,7 +16,7 @@ type AbsenJam struct {
 	Proses     string    `gorm:"column:Proses" json:"Proses"`
 	Shift      string    `gorm:"column:Shift" json:"Shift"`
 
-	Karyawan Karyawan `gorm:"foreignKey:IdKaryawan;references:IdKaryawan" json:"Karyawan"`
+	Karyawan *Karyawan `gorm:"foreignKey:IdKaryawan;references:IdKaryawan" json:"Karyawan"`
 }
 
 func (AbsenJam) TableName() string {

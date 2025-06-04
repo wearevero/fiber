@@ -3,15 +3,15 @@ package models
 import "time"
 
 type KaryawanKeluar struct {
-	IdKeluar       int       `gorm:"primaryKey;column:IdKeluar" json:"IdKeluar"`
-	IdKaryawan     int       `gorm:"type:int;column:IdKaryawan" json:"IdKaryawan"`
-	TglPengajuan   time.Time `gorm:"type:timestamp;column:TglPengajuan" json:"TglPengajuan"`
-	TglKeluar      time.Time `gorm:"type:timestamp;column:TglKeluar" json:"TglKeluar"`
-	Alasan         string    `gorm:"type:varchar(255);column:Alasan" json:"Alasan"`
-	DapatSeragam   string    `gorm:"type:varchar(255);column:DapatSeragam" json:"DapatSeragam"`
-	KembaliSeragam time.Time `gorm:"type:timestamp;column:KembaliSeragam" json:"KembaliSeragam"`
+	IdKeluar       int        `gorm:"primaryKey;column:IdKeluar" json:"IdKeluar"`
+	IdKaryawan     *int       `gorm:"column:IdKaryawan;not null" json:"IdKaryawan"`
+	TglPengajuan   *time.Time `gorm:"column:TglPengajuan" json:"TglPengajuan"`
+	TglKeluar      *time.Time `gorm:"column:TglKeluar" json:"TglKeluar"`
+	Alasan         *string    `gorm:"column:Alasan;type:varchar(255)" json:"Alasan"`
+	DapatSeragam   *string    `gorm:"column:DapatSeragam;type:varchar(255)" json:"DapatSeragam"`
+	KembaliSeragam *time.Time `gorm:"column:KembaliSeragam" json:"KembaliSeragam"`
 
-	Karyawan Karyawan `gorm:"foreignKey:IdKaryawan;references:IdKaryawan" json:"Karyawan"`
+	DetailKaryawan *Karyawan `gorm:"foreignKey:IdKaryawan;references:IdKaryawan" json:"Karyawan"`
 }
 
 func (KaryawanKeluar) TableName() string {

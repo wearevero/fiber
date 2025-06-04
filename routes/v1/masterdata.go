@@ -27,6 +27,7 @@ func registerMasterDataRoutes(v1 fiber.Router) {
 	jabatan.Delete("/:IdJabatan", jabatancontroller.Delete)
 
 	karyawan := master.Group("/karyawan")
+	karyawan.Get("/count", karyawancontroller.CountActive)
 	karyawan.Get("/", karyawancontroller.Index)
 	karyawan.Get("/:IdKaryawan", karyawancontroller.Show)
 	karyawan.Post("/", karyawancontroller.Create)

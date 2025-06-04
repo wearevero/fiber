@@ -1,3 +1,4 @@
+// models/absenharian.go
 package models
 
 import (
@@ -6,12 +7,13 @@ import (
 
 type AbsenHarian struct {
 	IdAbsenHarian int       `gorm:"primaryKey;column:IdAbsenHarian" json:"IdAbsenHarian"`
-	IdKaryawan    int       `gorm:"column:IdKaryawan;size:255" json:"IdKaryawan"`
-	IdBagian      string    `gorm:"column:IdBagian;type:longtext" json:"IdBagian"`
+	IdKaryawan    *int      `gorm:"column:IdKaryawan" json:"IdKaryawan"`
+	IdBagian      *int      `gorm:"column:IdBagian" json:"IdBagian"`
 	TglAbsen      time.Time `gorm:"column:TglAbsen;type:date" json:"TglAbsen"`
-	Absen         string    `gorm:"column:Absen;type:longtext" json:"Absen"`
+	Absen         *string   `gorm:"column:Absen" json:"Absen"`
 
-	Karyawan Karyawan `gorm:"foreignKey:IdKaryawan;references:IdKaryawan" json:"Karyawan"`
+	DetailKaryawan Karyawan `gorm:"foreignKey:IdKaryawan;references:IdKaryawan" json:"Karyawan"`
+	Bagian         Bagian   `gorm:"foreignKey:IdBagian;references:IdBagian" json:"Bagian"`
 }
 
 func (AbsenHarian) TableName() string {
