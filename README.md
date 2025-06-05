@@ -1,3 +1,5 @@
+<!-- GitAds-Verify: RH19HCSVWEY2MA8ZWTO2YXA65VZF8Y1D -->
+
 # Fiber
 
 An internal RESTful API developed using the Go-Fiber framework, designed to deliver exceptional speed, seamless integration, and reliable scalability.
