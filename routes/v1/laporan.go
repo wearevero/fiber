@@ -11,9 +11,7 @@ func registerLaporanRoutes(v1 fiber.Router) {
 	laporan := v1.Group("/laporan")
 
 	jam := laporan.Group("/absen-jam")
-
 	jam.Get("/:IdBagian/:TglAbsen", absenjamcontroller.Index)
-	jam.Get("/detail/:IdAbsenJam", absenjamcontroller.Show)
 
 	harian := laporan.Group("/absen-harian")
 	harian.Get("/:IdBagian/:bulan/:tahun", absenhariancontroller.Index)

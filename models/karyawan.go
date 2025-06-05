@@ -30,11 +30,15 @@ type Karyawan struct {
 	StatusPerkawinan *string    `gorm:"column:StatusPerkawinan" json:"StatusPerkawinan"`
 	Photo            *string    `gorm:"column:Photo" json:"Photo"`
 	IdBagian         *int       `gorm:"column:IdBagian" json:"IdBagian"`
+	IdJabatan        *int       `gorm:"column:IdJabatan" json:"IdJabatan"` // TAMBAHKAN FIELD INI
 	GajiPokok        *float64   `gorm:"column:GajiPokok" json:"GajiPokok"`
 	TunPribadi       *float64   `gorm:"column:TunPribadi" json:"TunPribadi"`
 	Retensi          *string    `gorm:"column:Retensi" json:"Retensi"`
 	Keterangan       *string    `gorm:"column:Keterangan" json:"Keterangan"`
 	Aktif            *string    `gorm:"column:Aktif" json:"Aktif"`
+
+	MasterJabatan *Jabatan `gorm:"foreignKey:IdJabatan;references:IdJabatan" json:"MasterJabatan,omitempty"`
+	MasterBagian  *Bagian  `gorm:"foreignKey:IdBagian;references:IdBagian" json:"MasterBagian,omitempty"`
 }
 
 func (Karyawan) TableName() string {

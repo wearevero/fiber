@@ -28,34 +28,38 @@ func respond(c *fiber.Ctx, status int, message string, data interface{}) error {
 func Index(c *fiber.Ctx) error {
 	var data []models.Karyawan
 
-	page, _ := strconv.Atoi(c.Query("page", "1"))
-	limit, _ := strconv.Atoi(c.Query("limit", "10"))
-	aktif := c.Query("aktif", "Ya")                    // Default tampilkan yang aktif
-	search := strings.TrimSpace(c.Query("search", "")) // Parameter pencarian
-
-	if page < 1 {
+	page, err := strconv.Atoi(c.Query("page", "1"))
+	if err != nil || page < 1 {
 		page = 1
 	}
-	if limit < 1 {
+
+	limit, err := strconv.Atoi(c.Query("limit", "10"))
+	if err != nil || limit < 1 || limit > 100 {
 		limit = 10
 	}
 
+	aktif := c.Query("aktif", "Ya")
+	search := strings.TrimSpace(c.Query("search", ""))
+
 	offset := (page - 1) * limit
 
-	// Build query berdasarkan filter aktif
 	var query *gorm.DB
 	if aktif == "semua" {
-		// Jika aktif = "semua", tampilkan semua data
+
 		query = DB.Model(&models.Karyawan{})
 	} else {
-		// Jika aktif = "Ya" atau "Tidak", filter berdasarkan status aktif
+
+		if aktif != "Ya" && aktif != "Tidak" {
+			aktif = "Ya"
+		}
 		query = DB.Model(&models.Karyawan{}).Where("Aktif = ?", aktif)
 	}
 
-	// Tambahkan pencarian jika ada parameter search
 	if search != "" {
-		query = query.Where("NikKaryawan LIKE ? OR NamaLengkap LIKE ?",
-			"%"+search+"%", "%"+search+"%")
+
+		query = query.Where(
+			"NikKaryawan LIKE ? OR NamaLengkap LIKE ? OR NamaPanggilan LIKE ? OR Jabatan LIKE ?",
+			"%"+search+"%", "%"+search+"%", "%"+search+"%", "%"+search+"%")
 	}
 
 	var total int64
@@ -63,35 +67,32 @@ func Index(c *fiber.Ctx) error {
 		return respond(c, http.StatusInternalServerError, "Gagal mengambil data", nil)
 	}
 
-	// Hitung total karyawan aktif untuk informasi tambahan
-	var activeCount int64
+	var activeCount, inactiveCount, allCount int64
+
 	if err := DB.Model(&models.Karyawan{}).Where("Aktif = ?", "Ya").Count(&activeCount).Error; err != nil {
 		return respond(c, http.StatusInternalServerError, "Gagal menghitung karyawan aktif", nil)
 	}
 
-	// Hitung total karyawan tidak aktif
-	var inactiveCount int64
 	if err := DB.Model(&models.Karyawan{}).Where("Aktif = ?", "Tidak").Count(&inactiveCount).Error; err != nil {
 		return respond(c, http.StatusInternalServerError, "Gagal menghitung karyawan tidak aktif", nil)
 	}
 
-	// Hitung total semua karyawan
-	var allCount int64
 	if err := DB.Model(&models.Karyawan{}).Count(&allCount).Error; err != nil {
 		return respond(c, http.StatusInternalServerError, "Gagal menghitung semua karyawan", nil)
 	}
 
 	totalPages := int(math.Ceil(float64(total) / float64(limit)))
 
-	if page > totalPages && totalPages != 0 {
+	if page > totalPages && totalPages > 0 {
 		return respond(c, http.StatusNotFound, "Halaman tidak ditemukan", nil)
 	}
 
-	// Ambil data dengan filter
-	err := query.
+	err = query.
+		Preload("MasterJabatan").
+		Preload("MasterBagian").
 		Limit(limit).
 		Offset(offset).
-		Order("IdKaryawan DESC").
+		Order("IdKaryawan ASC").
 		Find(&data).Error
 
 	if err != nil {
@@ -115,16 +116,20 @@ func Index(c *fiber.Ctx) error {
 			}
 			return 0
 		}(),
+		"has_previous": page > 1,
+		"has_next":     page < totalPages,
 	}
 
 	return c.Status(http.StatusOK).JSON(fiber.Map{
-		"status":         http.StatusOK,
-		"message":        "Data berhasil ditemukan",
-		"data":           data,
-		"pagination":     pagination,
-		"active_count":   activeCount,
-		"inactive_count": inactiveCount,
-		"all_count":      allCount,
+		"status":     http.StatusOK,
+		"message":    "Data berhasil ditemukan",
+		"data":       data,
+		"pagination": pagination,
+		"statistics": fiber.Map{
+			"active_count":   activeCount,
+			"inactive_count": inactiveCount,
+			"all_count":      allCount,
+		},
 		"current_filter": aktif,
 		"search_term":    search,
 	})
