@@ -40,3 +40,7 @@ air
 ```
 
 This will start the server, and it will automatically restart whenever there are changes to the source code, making development faster and more efficient.
+
+## GitAds Sponsored
+
+[![Sponsored by GitAds](https://gitads.dev/v1/ad-serve?source=wearevero/fiber@github)](https://gitads.dev/v1/ad-track?source=wearevero/fiber@github)
