@@ -7,6 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/wearevero/fiber/controllers/Laporan/absenhariancontroller"
+	"github.com/wearevero/fiber/controllers/Laporan/absenhariinicontroller"
 	"github.com/wearevero/fiber/controllers/Laporan/absenjamcontroller"
 	"github.com/wearevero/fiber/controllers/Laporan/absenlemburcontroller"
 	"github.com/wearevero/fiber/controllers/MasterData/bagiancontroller"
@@ -32,6 +33,7 @@ func main() {
 	absenjamcontroller.SetDB(db)
 	absenhariancontroller.SetDB(db)
 	absenlemburcontroller.SetDB(db)
+	absenhariinicontroller.SetDB(db)
 
 	// Get port from .env or use default
 	port := os.Getenv("APP_PORT")
