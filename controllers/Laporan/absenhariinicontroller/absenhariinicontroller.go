@@ -42,7 +42,7 @@ func CekAbsenBagian(c *fiber.Ctx) error {
 	}
 
 	var semuaKaryawanAktif []models.Karyawan
-	karyawanQuery := DB.Where("Aktif = ?", "Ya").Preload("MasterBagian")
+	karyawanQuery := DB.Where("Aktif = ? AND IdBagian NOT IN (?)", "Ya", []int{25}).Preload("MasterBagian")
 	if idBagian != "ALL" && idBagian != "all" {
 		karyawanQuery = karyawanQuery.Where("IdBagian = ?", idBagian)
 	}
